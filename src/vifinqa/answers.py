@@ -410,18 +410,15 @@ def answer_plan(question: str, values: list[EvidenceValue]) -> tuple[float, str]
 
 def _question_ordered_operands(question: str, values: list[EvidenceValue]) -> list[EvidenceValue]:
     """Order labeled operands by the metric phrases in the question."""
-    labels = [fold(label) for label in line_item_phrases()]
-    text = f" {fold(question)} "
-    requested = [label for label in labels if label and f" {label} " in text]
-    if len(requested) < 2 or not any(value.label for value in values):
+    requested = _question_metric_mentions(question, values)
+    if len(requested) < 2:
         return values
     ordered: list[EvidenceValue] = []
     used: set[int] = set()
     for metric in requested:
-        metric_tokens = set(metric.split())
         matches = [
             (index, value) for index, value in enumerate(values)
-            if index not in used and metric_tokens <= set(fold(value.label).split())
+            if index not in used and _metric_match(value, metric)
         ]
         if matches:
             index, value = matches[0]
