@@ -258,11 +258,8 @@ def select_cell(
 
     Retrieval binds a row while ranking a whole table, so in principle the bound
     row is the one that made the table look relevant rather than the one asked
-    for. Measured against the benchmark's 613 verified bindings, searching every
-    row scores identically to trusting the retrieval binding — 202 exact cells
-    either way, with five row errors traded for five column errors. Kept as the
-    instrument that established that, and used by scripts/evaluate_cells.py;
-    production still reads the retrieval binding.
+    for. Production still reads the retrieval binding; this helper remains a
+    deterministic fallback for callers that need row search.
 
     Ties go to the earlier row, so statements keep their natural order.
     """

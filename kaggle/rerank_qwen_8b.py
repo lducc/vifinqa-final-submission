@@ -10,8 +10,7 @@ differs plus SCORES_PATH. Two runs in different sessions are not comparable.
 Retrieval is untouched — only the order of already-retrieved candidates changes,
 so discarding a run means deleting one file.
 
-kaggle/README.md has the settings, the timings, and why each default is what it
-is. Read it before changing one.
+README.md has the settings and the run order. Read it before changing one.
 """
 
 import json

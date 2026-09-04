@@ -29,13 +29,9 @@ the gate's own misses, which nothing downstream can currently fix.
 4. Then set `LIMIT = 0` and run it again: 130,556 passages of 256 tokens through
    a 4B model is 2.7e17 FLOPs, near three hours at the 25 TFLOP/s a T4 sustains,
    inside a 12-hour session with room to spare.
-5. Download `/kaggle/working/dense/` to `output/dense/`, then, before anything
-   is scored:
-
-       python scripts/audit_dense_overlap.py --dense output/dense
-
-   That says where these candidates sit relative to the report gate, which is
-   what decides whether the long scoring run is worth starting.
+5. Download `/kaggle/working/dense/` to `output/dense/`, then run the repository
+   validators before scoring pairs. The exact commands are in the root
+   `README.md`.
 
 Nothing here reads a label. The passages come from the corpus and the queries
 from the released question file, so the whole stage is reproducible by anyone

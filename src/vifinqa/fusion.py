@@ -3,11 +3,10 @@
 Every replacement tried on this task has lost and every fusion that earned its
 place has won, so the reranker enters as one more reciprocal rank rather than as
 the new order. Lives in the package rather than beside the CLI because
-`compare_rerank_runs.py` has to score exactly what ships; two copies of the rule
-means a comparison can silently stop measuring the shipped system.
+The rule lives in the package so every CLI and notebook uses the same behavior.
 
-The fixed equal weight is the preregistered rule in
-docs/final-stretch-plan-20260825.md; it is not a tunable parameter.
+The fixed equal weight is part of the published retrieval contract; it is not
+a tunable parameter.
 """
 
 from collections import defaultdict
