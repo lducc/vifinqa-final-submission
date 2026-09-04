@@ -223,7 +223,7 @@ For the frozen public-best ZIP, upload it to
 
 The notebook extracts evidence with `scripts/build_answer_inputs.py`, starts
 Qwen3.5-9B through vLLM, validates grounded programs with Pydantic, retries at
-most twice, replays every answer, and writes:
+most three times, replays every answer, and writes:
 
 ```text
 /content/submission_qwen35_grounded.zip
