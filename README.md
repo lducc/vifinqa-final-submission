@@ -48,9 +48,18 @@ RUN=output/final_run
 scripts/build_final_candidates.sh "$RUN"
 ```
 
-Upload `$RUN/pairs_hybrid_graph.jsonl` to a GPU runtime and run
-`kaggle/rerank_qwen_8b.py`. Download a complete `scores.jsonl` and its manifest,
-then validate and derive the ranking:
+Upload `$RUN/pairs_hybrid_graph.jsonl` to a GPU runtime as
+`/kaggle/input/vifinqa-rerank-pairs/pairs_hybrid_graph.jsonl`, then run the
+reranker with positional paths:
+
+```bash
+python kaggle/rerank_qwen_8b.py \
+  /kaggle/input/vifinqa-rerank-pairs/pairs_hybrid_graph.jsonl \
+  /kaggle/working/scores.jsonl
+```
+
+Download the complete `scores.jsonl` and its generated
+`scores.jsonl.manifest.json` to `$RUN`, then validate and derive the ranking:
 
 ```bash
 python scripts/validate_rerank_scores.py \
