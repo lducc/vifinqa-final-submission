@@ -1,0 +1,42 @@
+{
+  "label_version": "benchmark-v2-disputed-pool",
+  "base": {
+    "path": "attic/annotations/benchmark.jsonl",
+    "sha256": "c6ecedeca223bad686f1a47254ca1d7f3d819496a8ff37d7ca84f615c0d811ec",
+    "questions": 233
+  },
+  "verdicts": {
+    "path": "data/annotations/benchmark_v2/verdicts.jsonl",
+    "sha256": "9a3f81d9549e3375a7b5273f14737d504cf3930e0d301e420267f969edbb10fb",
+    "judged": 178
+  },
+  "verdict_counts": {
+    "relevant": 25,
+    "not_relevant": 139,
+    "uncertain": 14
+  },
+  "verdict_counts_by_tier": {
+    "relevant/intermediate": 11,
+    "not_relevant/intermediate": 78,
+    "not_relevant/easy": 3,
+    "uncertain/easy": 1,
+    "not_relevant/medium": 14,
+    "uncertain/intermediate": 5,
+    "not_relevant/hard": 44,
+    "uncertain/hard": 5,
+    "relevant/hard": 10,
+    "uncertain/medium": 3,
+    "relevant/medium": 4
+  },
+  "uncertain_included": false,
+  "labels_added": 25,
+  "gold_tables_per_question": 3.3476,
+  "organizer_gold_tables_per_question": 3.27,
+  "output_sha256": "f3a10e95d6a2fd84ea1ead2bcde1c8787a327b8b6982adabdaa533f0a76584d5",
+  "scope": "Judged pool is the set of tables submission 08 retrieves and submission 00 does not, on the 233 benchmark questions. It is not a symmetric pool over all retrievers.",
+  "known_limitations": [
+    "Pooled from one arm only, so labels favour tables that arm retrieves.",
+    "With the pooled arm held out, correlation against public scores does not improve; this version repairs specific labels, it does not make the benchmark able to rank close arms.",
+    "Use as a harm gate and for the 00-versus-08 comparison, not to select among half-point variants."
+  ]
+}
