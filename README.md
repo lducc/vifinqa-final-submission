@@ -34,6 +34,20 @@ and run all cells on an A100 runtime. For a fresh retrieval run, use
 the ranking, and invoke `run.py`; the exact sequence is documented in
 [`docs/BEST_ZIP_PIPELINE.md`](docs/BEST_ZIP_PIPELINE.md).
 
+The fresh end-to-end handoff is:
+
+```text
+organizer data + dense index
+  → scripts/build_final_candidates.sh
+  → Qwen reranker scores
+  → scripts/apply_rerank_scores.py
+  → scripts/select_slot_tables.py --adaptive-append --logit-gap 3
+  → run.py
+  → package/submission.zip
+  → notebooks/05_answer_adaptive_qwen35.ipynb
+  → final submission ZIP
+```
+
 ## Files
 
 * `run.py` — end-to-end retrieval/package entrypoint;
