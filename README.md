@@ -133,7 +133,7 @@ python /content/vifinqa-final-submission/scripts/build_answer_inputs.py \
 ```
 
 Clone the repository in that runtime and run all cells in
-`notebooks/05_answer_adaptive_qwen35.ipynb` on an A100. It writes the final
+`notebooks/final_answer.ipynb` on an A100. It writes the final
 answer ZIP and checkpoint files under `/content/`.
 
 ## Frozen-control answering notebook
@@ -166,7 +166,7 @@ input is the committed public-best ZIP rather than a fresh retrieval output.
 * `kaggle/embed_tables.py` — dense-index generation;
 * `kaggle/rerank_qwen_8b.py` — GPU pair scoring;
 * `notebooks/03_rerank_cascade.ipynb` — BGE/Qwen cascade experiment;
-* `notebooks/05_answer_adaptive_qwen35.ipynb` — answer stage from extracted evidence;
+* `notebooks/final_answer.ipynb` — answer stage from extracted evidence;
 * `notebooks/08_answer_from_best_zip.ipynb` — answer stage from the frozen control.
 
 No raw organizer data, credentials, model weights, or temporary outputs belong
