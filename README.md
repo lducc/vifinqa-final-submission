@@ -37,6 +37,68 @@ data/raw/vifinqa/financial_statements/<ticker>/<year>/...
 The dense index is also external at `output/dense/` and must contain the files
 written by `kaggle/embed_tables.py`. Model weights are downloaded by the runtime.
 
+### Data description and access
+
+The pipeline uses only the ViFinQA questions and financial-statement tables
+provided by the competition organizers. It does not add financial values from
+the web or from a private database. The source files are text/HTML-extracted
+financial reports plus the released question and company-mapping files.
+
+The team must provide the organizer data through the competition-approved
+Google Drive, OneDrive, or equivalent link when submitting the dossier. The
+repository deliberately contains no private or credentialed data link. After
+download, verify the layout above before running the commands below.
+
+### Model checkpoints
+
+| Checkpoint | Revision | Use |
+| --- | --- | --- |
+| `Qwen/Qwen3-Embedding-4B` | `5cf2132abc99cad020ac570b19d031efec650f2b` | offline dense index |
+| `Qwen/Qwen3-Reranker-8B` | `77d193c791ed757ca307ee72715aa132723da912` | table-pair reranking |
+| `Qwen/Qwen3.5-9B` | `c202236235762e1c871ad0ccb60c8ee5ba337b9a` | grounded answer generation |
+
+The checkpoints are public Hugging Face models. Download a pinned revision
+without storing it in Git:
+
+```bash
+huggingface-cli download Qwen/Qwen3-Embedding-4B \
+  --revision 5cf2132abc99cad020ac570b19d031efec650f2b
+huggingface-cli download Qwen/Qwen3-Reranker-8B \
+  --revision 77d193c791ed757ca307ee72715aa132723da912
+huggingface-cli download Qwen/Qwen3.5-9B \
+  --revision c202236235762e1c871ad0ccb60c8ee5ba337b9a
+```
+
+The reranker and answer notebook use deterministic decoding. The reranker
+requires a GPU runtime; retrieval packaging and validation remain Python code.
+
+### Source, dependencies, and configuration
+
+The complete source is this repository. Runtime dependencies are declared in
+`pyproject.toml` (Python `>=3.12`, NumPy, pandas, pytest, sentencepiece, Torch,
+and Transformers). The final answer notebook installs `pydantic`, `openai`,
+`vllm==0.28.0`, `transformers`, and pandas in its first cell. The pinned model
+revisions, reranker prompt, candidate depths, and answer-server settings are
+visible in `kaggle/rerank_qwen_8b.py` and `notebooks/final_answer.ipynb`.
+
+No API key is required by the core pipeline. Any Hugging Face token used to
+download a gated checkpoint must be supplied through the runtime secret store,
+never committed to source, logs, or the submission ZIP.
+
+### Submission and traceability
+
+`run.py` creates `submission.zip` from the organizer reports. Each evidence CSV
+is materialized from a source table and is referenced by `relevant_docs`,
+`relevant_tables`, and `evidence` in `submission.json`. The answer notebook
+computes each result from those CSVs at execution time; it does not store
+answers or financial values as constants. `scripts/validate_submission.py` and
+`scripts/verify_execution.py` check ZIP integrity, evidence paths, and replay.
+
+Before delivery, the team should attach the organizer-data access link, record
+the final ZIP SHA-256, run both validators, and submit this README with the
+source code and checkpoint links. The committed ZIP is a reproducible control;
+the fresh-run commands below are the method to regenerate a new package.
+
 ## Fresh run, step by step
 
 ### 1. Check out the code and install it
