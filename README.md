@@ -132,6 +132,18 @@ python /content/vifinqa-final-submission/scripts/build_answer_inputs.py \
   --output-dir /content/answer_inputs
 ```
 
+The final notebook expects this exact layout. The manifest must contain all
+1,012 retrieval rows and reference every evidence CSV:
+
+```text
+/content/answer_inputs/
+├── retrieval_manifest.jsonl
+└── data/
+    └── tables/
+        ├── table_*.csv
+        └── ...
+```
+
 Clone the repository in that runtime and run all cells in
 `notebooks/final_answer.ipynb` on an A100. It writes the final
 answer ZIP and checkpoint files under `/content/`.
