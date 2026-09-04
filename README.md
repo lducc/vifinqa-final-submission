@@ -37,16 +37,28 @@ data/raw/vifinqa/financial_statements/<ticker>/<year>/...
 The dense index is also external at `output/dense/` and must contain the files
 written by `kaggle/embed_tables.py`. Model weights are downloaded by the runtime.
 
-## Fresh retrieval and ZIP
+## Fresh run, step by step
 
-Install the package and run the deterministic candidate build in a new output
-directory:
+### 1. Check out the code and install it
 
 ```bash
+git clone https://github.com/lducc/vifinqa-final-submission.git
+cd vifinqa-final-submission
 python -m pip install -e .
-RUN=output/final_run
-scripts/build_final_candidates.sh "$RUN"
 ```
+
+Copy the organizer files into the `data/raw/vifinqa/` layout above and place the
+completed dense index in `output/dense/`. Build a new run directory:
+
+```bash
+RUN=output/final_run
+PYTHON=python DENSE_DIR=output/dense scripts/build_final_candidates.sh "$RUN"
+```
+
+This checks the code and dense index, then writes the complete candidate union
+and sidecars. It does not score with a model.
+
+### 2. Score the exported pairs on a GPU
 
 Upload `$RUN/pairs_hybrid_graph.jsonl` to a GPU runtime as
 `/kaggle/input/vifinqa-rerank-pairs/pairs_hybrid_graph.jsonl`, then run the
@@ -60,6 +72,8 @@ python kaggle/rerank_qwen_8b.py \
 
 Download the complete `scores.jsonl` and its generated
 `scores.jsonl.manifest.json` to `$RUN`, then validate and derive the ranking:
+
+### 3. Validate scores and select tables
 
 ```bash
 python scripts/validate_rerank_scores.py \
@@ -83,7 +97,7 @@ python scripts/select_slot_tables.py \
   --trace "$RUN/ranking_adaptive_gap3.trace.jsonl"
 ```
 
-Merge the generated sidecars, package the evidence, and validate:
+### 4. Package the fresh retrieval result
 
 ```bash
 python scripts/merge_table_sidecars.py \
@@ -104,7 +118,25 @@ python scripts/verify_execution.py --package "$RUN/package_run/package"
 
 The retrieval ZIP is `$RUN/package_run/submission.zip`.
 
-## Final answering notebook
+### 5. Generate answers
+
+For a fresh retrieval ZIP, upload it to the answer runtime as
+`/content/retrieval_fresh.zip`, clone the repository there, and create the input
+directory:
+
+```bash
+git clone --depth 1 https://github.com/lducc/vifinqa-final-submission.git \
+  /content/vifinqa-final-submission
+python /content/vifinqa-final-submission/scripts/build_answer_inputs.py \
+  /content/retrieval_fresh.zip \
+  --output-dir /content/answer_inputs
+```
+
+Clone the repository in that runtime and run all cells in
+`notebooks/05_answer_adaptive_qwen35.ipynb` on an A100. It writes the final
+answer ZIP and checkpoint files under `/content/`.
+
+## Frozen-control answering notebook
 
 For the frozen public-best ZIP, upload it to
 `/content/submission_best_20260826.zip`, clone this repository, and open
@@ -123,8 +155,8 @@ most twice, replays every answer, and writes:
 /content/submission_qwen35_grounded.zip
 ```
 
-For a newly generated retrieval ZIP, run the same builder manually with that
-ZIP and use `notebooks/05_answer_adaptive_qwen35.ipynb`.
+The frozen-control notebook performs the same answer/validation stage, but its
+input is the committed public-best ZIP rather than a fresh retrieval output.
 
 ## Code map
 
