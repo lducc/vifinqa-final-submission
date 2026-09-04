@@ -21,6 +21,9 @@ The frozen public-best control is
 Recorded public metrics: tables F2 `0.5495`, documents F2 `0.9711`, and answer
 execution `0.1561`.
 
+The component boundaries and invariants are described in
+[`ARCHITECTURE.md`](ARCHITECTURE.md).
+
 ## Inputs
 
 Keep the organizer corpus outside Git at `data/raw/vifinqa/`:
