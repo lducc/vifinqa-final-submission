@@ -59,6 +59,8 @@ The two runnable notebooks are:
   Qwen cascade and `run.py` packaging.
 * `notebooks/05_answer_adaptive_qwen35.ipynb` — grounded Qwen3.5-9B answer
   generation from the packaged evidence, with checkpointing and validation.
+* `notebooks/08_answer_from_best_zip.ipynb` — transparent answer-stage run
+  from the validated `submission_best_20260826.zip` retrieval baseline.
 
 The rerank notebook expects these uploaded inputs:
 
