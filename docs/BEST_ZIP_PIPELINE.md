@@ -1,8 +1,7 @@
 # Best ZIP generator map
 
-`main` is intentionally answer-only. The full generator is preserved in the
-previous repository commit `5c18ac3` and in the original `publish/rebuild-clean`
-source tree.
+`main` contains the lean end-to-end generator. Unrelated training, benchmark,
+and infrastructure experiments are omitted.
 
 The generator is composed of:
 
@@ -30,7 +29,7 @@ document gate
 The frozen output is `artifacts/submission_best_20260826.zip`. Its SHA-256 is
 `97baa1201450801e50480ce68db055d7bdbc99029cac93c21654cdf471789067`.
 
-To inspect the generator without bloating `main`:
+The historical full source is also available at commit `5c18ac3`:
 
 ```bash
 git clone https://github.com/lducc/vifinqa-final-submission.git
